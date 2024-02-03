@@ -21,7 +21,7 @@ const users = [
 ];
 
 export async function loader(): Promise<User[]> {
-  return new Promise((resolve, _reject) => {
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve(users)
     }, 500);

@@ -21,10 +21,10 @@ export default function NavBar() {
       </div>
       <div className="navbar-end mr-2">
         <ul className="menu menu-horizontal px-1">
-          <li><a href="/auth/login">Sign in</a></li>
+          <li><a href="/login">Sign in</a></li>
         </ul>
-        <a className="btn btn-outline btn-primary" href="/auth/signup">Create account</a>
+        <a className="btn btn-outline btn-primary" href="/signup">Create account</a>
       </div>
     </div>
   );
-};
+}

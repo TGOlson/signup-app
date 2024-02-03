@@ -70,6 +70,12 @@ module.exports = {
         "plugin:import/recommended",
         "plugin:import/typescript",
       ],
+      rules: {
+        '@typescript-eslint/no-unused-vars': ['warn', { 'varsIgnorePattern': '^_', 'argsIgnorePattern': '^_' }],
+        // '@typescript-eslint/semi': 'warn',
+        // '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+        // '@typescript-eslint/consistent-indexed-object-style': 'off',
+      },
     },
 
     // Node

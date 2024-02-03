@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(nanoid())
+
+  firstName    String?
+  lastName     String?
+
+  email        String   @unique
+
+  signups      Signup[]
+  participants Participant[]
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+}
+
+model Signup {
+  id          String   @id @default(nanoid())
+
+  published   Boolean
+  title       String
+  description String
+  
+  authorId    String
+  author      User     @relation(fields: [authorId], references: [id])
+  
+  signupOptions SignupOption[]  
+  // TODO: config?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+}
+
+model SignupOption {
+  id          String   @id @default(nanoid())
+
+  signupId    String
+  signup      Signup   @relation(fields: [signupId], references: [id])
+
+  title       String
+  description String
+
+  quantity    Int
+  date        DateTime
+  // TODO: start/end time, location?
+
+  participants Participant[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Participant {
+  id        String   @id @default(nanoid())
+
+  signupOptionId String
+  signupOption   SignupOption @relation(fields: [signupOptionId], references: [id])
+  quantity       Int
+  comment        String?
+
+  firstName String
+  lastName  String
+  email     String
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
