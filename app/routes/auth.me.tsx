@@ -1,9 +1,7 @@
 import { User } from "@prisma/client";
-import { LoaderFunctionArgs } from "@remix-run/node";
-import { authenticator } from "~/services/auth.server";
+import { LoaderFunctionArgs, TypedResponse, json } from "@remix-run/node";
+import { requireUser } from "~/services/auth.server";
 
-export async function loader({ request }: LoaderFunctionArgs): Promise<User> {
-  return authenticator.isAuthenticated(request, {
-    failureRedirect: "/login",
-  });
+export async function loader({ request }: LoaderFunctionArgs): Promise<TypedResponse<User>> {
+  return requireUser(request).then(json);
 }

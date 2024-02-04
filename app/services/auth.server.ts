@@ -1,9 +1,8 @@
-// app/services/auth.server.ts
 import { Authenticator } from "remix-auth";
 import { sessionStorage } from "~/services/session.server";
 import { GoogleStrategy } from 'remix-auth-google'
 import { User } from "@prisma/client";
-import { prisma } from "./prisma";
+import { prisma } from "./db";
 
 // Create an instance of the authenticator, pass a generic with what
 // strategies will return and will store in the session
@@ -15,7 +14,8 @@ const googleStrategy = new GoogleStrategy(
     clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     callbackURL: 'http://localhost:3000/auth/google/callback',
   },
-  async ({ accessToken, refreshToken, extraParams, profile }) => {
+  // async ({ accessToken, refreshToken, extraParams, profile }) => {
+  async ({ profile }) => {
     const email = profile.emails[0].value;
 
     return await prisma.user.upsert({
@@ -31,3 +31,9 @@ const googleStrategy = new GoogleStrategy(
 )
 
 authenticator.use(googleStrategy)
+
+export async function requireUser(request: Request): Promise<User> {
+  return authenticator.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
+} 
