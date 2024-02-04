@@ -48,6 +48,7 @@ model SignupOption {
   title       String
   description String
 
+  index       Int
   quantity    Int
   date        DateTime
   // TODO: start/end time, location?

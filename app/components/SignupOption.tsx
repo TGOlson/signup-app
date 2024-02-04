@@ -1,6 +1,5 @@
 import type { Participant, SignupOption } from "@prisma/client";
 import { SerializeFrom } from "@remix-run/node";
-import { useState } from "react";
 
 type Props = {
   option: SerializeFrom<SignupOption & {
@@ -18,20 +17,30 @@ export default function SignupOption({ option }: Props) {
               <h2 className="card-title mb-1">{option.title}</h2>
               <p className="text-sm text-gray-600">{new Date(option.date).toLocaleDateString()}</p>
             </div>
-            <p className="min-w-32 flex-grow-0 mr-4">{option.quantity - option.participants.length} of {option.quantity} available</p>
+            <span className="badge badge-ghost min-w-32 flex-grow-0 mr-4">{option.quantity - option.participants.length} of {option.quantity} slots available</span>
             <button className="btn btn-primary btn-outline">Sign Up</button>
           </div>
         </summary>
-        <div className="collapse-content">
-          <div className="divider"></div> 
-          <p className="text-sm text-gray-600">{option.description}</p>
-
-          <h3>Participants</h3>
-          <ul>
+        <div className="collapse-content p-0 pb-0 pl-6">
+          <div className="divider my-2"></div> 
+          <div className="grid gap-4">
+            <div>
+              <p className="text-xs font-bold mb-1">Description</p>
+              <p className="text-sm text-gray-600">{option.description}</p>
+            </div>
+            <div className="gap-1 flex flex-col">
+            <p className="text-xs font-bold">Signups</p>
+            {!option.participants.length ? <p className="text-sm text-gray-400 italic">No signups yet!</p> : null}
             {option.participants.map(participant => (
-              <li key={participant.id}>{participant.firstName} {participant.lastName}</li>
+              <div key={participant.id} className="text-sm text-gray-600 gap-2 flex">
+                <span>{participant.firstName} {participant.lastName}</span>
+                {participant.quantity > 1 ? <span className="badge badge-primary">{participant.quantity}</span> : null}
+                {participant.comment ? <span className="text-sm text-gray-400 italic">{participant.comment}</span> : null}
+              </div>
             ))}
-          </ul>
+            </div>
+          </div>
+
         </div>
       </details>
     </div>

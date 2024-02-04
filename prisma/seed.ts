@@ -39,52 +39,66 @@ const main = async (): Promise<void> => {
       quantity: 10,
       date: new Date('2-1-2024'),
       signupId: signup1.id,
+      index: 0,
     }, {
       title: 'Camp Week 2',
       description: 'This is the second week of camp. Make sure to do stuff!',
       quantity: 10,
       date: new Date('2-8-2024'),
       signupId: signup1.id,
+      index: 1,
     }, {
       title: 'Camp Week 3',
       description: 'This is the third week of camp. Make sure to do stuff!',
       quantity: 10,
       date: new Date('2-15-2024'),
       signupId: signup1.id,
+      index: 2,
     }, {
       title: 'Option 1',
       description: 'This is the first option',
       quantity: 4,
       date: new Date(),
       signupId: signup2.id,
+      index: 0,
     }, {
       title: 'Option 2',
       description: 'This is the second option',
       quantity: 4,
       date: new Date(),
       signupId: signup2.id,
+      index: 1,
     }]
     .map(async (signupOption) => await prisma.signupOption.create({data: signupOption}))
   );
 
   await Promise.all([
     {
-      firstName: 'Fake',
-      lastName: 'Person1',
+      firstName: 'Conrad',
+      lastName: 'Carlson',
       email: 'fake1@example.com',
+      quantity: 1,
+      signupOptionId: option1.id,
+      comment: 'So excited!',
+    },
+    {
+      firstName: 'Steven',
+      lastName: 'Windward',
+      email: 'fake2@example.com',
+      quantity: 2,
+      signupOptionId: option1.id,
+      comment: 'I have 2 coming! Whoohoo!'
+    },
+    {
+      firstName: 'Carroll',
+      lastName: 'Caroline',
+      email: 'fake3@example.com',
       quantity: 1,
       signupOptionId: option1.id,
     },
     {
-      firstName: 'Fake',
-      lastName: 'Person2',
-      email: 'fake2@example.com',
-      quantity: 2,
-      signupOptionId: option1.id,
-    },
-    {
-      firstName: 'Fake',
-      lastName: 'Person3',
+      firstName: 'Carroll',
+      lastName: 'Caroline',
       email: 'fake3@example.com',
       quantity: 1,
       signupOptionId: option2.id,

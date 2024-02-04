@@ -18,7 +18,12 @@ export async function loader({ params }: LoaderFunctionArgs): Promise<TypedRespo
     include: {
       author: true,
       signupOptions: { 
-        include: { participants: true } 
+        include: { 
+          participants: {
+            orderBy: { createdAt: "asc" }
+          },
+        }, 
+        orderBy: { index: "asc" }
       } 
     }
   });
