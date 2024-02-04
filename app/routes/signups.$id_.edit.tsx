@@ -25,9 +25,14 @@ export default function DashboardUser() {
   const signup = useLoaderData<typeof loader>();
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold">{signup.title}</h1>
-      <p className="mt-4 text-gray-500">{signup.description}</p>
+    <div className="w-full h-screen bg-base-200">
+      <div className="form-control max-w-lg">
+        <div className="label"><span className="label-text">Title</span></div>
+        <h1 contentEditable className="border-b-4 border-indigo-500 w-full text-3xl">{signup.title}</h1>
+        <div className="label"><span className="label-text">Description</span></div>
+        <textarea defaultValue={signup.description} className="textarea h-24 w-full text-xl" />
+      </div>
+      {/* <p contentEditable className="mt-4 text-gray-500">{signup.description}</p> */}
     </div>
   )
 }

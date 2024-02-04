@@ -19,6 +19,7 @@ export default function DashboardUser() {
 
   return (
     <div>
+      <h1 className="text-3xl font-bold">View signup</h1>
       <h1 className="text-3xl font-bold">{signup.title}</h1>
       <p className="mt-4 text-gray-500">{signup.description}</p>
     </div>
