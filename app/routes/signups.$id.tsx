@@ -1,13 +1,14 @@
 import { useLoaderData } from "@remix-run/react";
 import { LoaderFunctionArgs, TypedResponse, json } from "@remix-run/node";
-import { Participant, Signup, SignupOption, User } from "@prisma/client";
+import { Participant, Signup, SignupOption as Option, User } from "@prisma/client";
 
+import SignupOption from "~/components/SignupOption";
 import { prisma } from "~/services/db";
 
 type SignupWithRefs = Signup & { 
   author: User,
   signupOptions: (
-    SignupOption & { participants: Participant[] }
+    Option & { participants: Participant[] }
   )[] 
 };
 
@@ -39,21 +40,7 @@ export default function DashboardUser() {
       </div>
       <h2 className="text-2xl font-bold">Signup Options</h2>
       <div className="gap-4 flex flex-col">
-        {signup.signupOptions.map(option => (
-          <div key={option.id} className="card border shadow">
-            <div className="card-body flex flex-row">
-              <h2 className="card-title flex-grow">{option.title}</h2>
-              <p>{new Date(option.date).toLocaleDateString()}</p>
-              <p>{option.quantity - option.participants.length} of {option.quantity} available</p>
-              <button className="btn btn-primary btn-outline">Sign Up</button>
-            </div>
-          </div>
-          // <li key={option.id}>
-          //   <h3 className="text-xl font-bold">{option.title}</h3>
-          //   <p>{option.description}</p>
-          //   <p>Participants: {option.participants.length}</p>
-          // </li>
-        ))}
+        {signup.signupOptions.map(option => <SignupOption key={option.id} option={option}/>)}
       </div>
     </div>
   )

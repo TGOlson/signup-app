@@ -23,6 +23,10 @@
   @apply no-animation;
 }
 
+.collapse-plus > .collapse-title:after {
+  @apply left-0;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
