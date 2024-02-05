@@ -15,7 +15,7 @@ export async function loader({ params, request }: LoaderFunctionArgs): Promise<T
   const user = await authenticator.isAuthenticated(request);
 
   if (!user || signup.authorId !== user.id) {
-    return redirect(`/signups/${signup.id}`);
+    return redirect(`/signup/${signup.id}`);
   }
 
   return json(signup);

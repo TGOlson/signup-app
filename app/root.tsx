@@ -1,4 +1,4 @@
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction, LoaderFunctionArgs, TypedResponse } from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -6,13 +6,20 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  json,
 } from "@remix-run/react";
 
 import styles from "./globals.css";
+import { User } from "@prisma/client";
+import { authenticator } from "./services/auth.server";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styles },
 ];
+
+export async function loader({ request }: LoaderFunctionArgs): Promise<TypedResponse<User | null>> {
+  return authenticator.isAuthenticated(request).then(json);
+}
 
 export default function App() {
   return (

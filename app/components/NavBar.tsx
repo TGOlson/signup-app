@@ -1,8 +1,11 @@
-import { Link } from "@remix-run/react"
+import { Link, useRouteLoaderData } from "@remix-run/react"
+import { loader } from "~/root";
 
 export default function NavBar() {
+  const user = useRouteLoaderData<typeof loader>("root");
+
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-base-200 sticky top-0">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -22,10 +25,16 @@ export default function NavBar() {
         </ul>
       </div>
       <div className="navbar-end mr-2">
-        <ul className="menu menu-horizontal px-1">
-          <li><Link to="/login">Sign in</Link></li>
-        </ul>
-        <Link className="btn btn-outline btn-primary" to="/signup">Create account</Link>
+        {user 
+          ? (
+            <Link className="btn btn-outline btn-primary" to="/dashboard">Dashboard</Link>
+          ) 
+          : (<>
+              <ul className="menu menu-horizontal px-1">
+                <li><Link to="/login">Sign in</Link></li>
+              </ul>
+              <Link className="btn btn-outline btn-primary" to="/signup">Create account</Link>
+            </>)}
       </div>
     </div>
   );

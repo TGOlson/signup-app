@@ -1,5 +1,5 @@
 import { useRouteLoaderData } from "@remix-run/react";
-import { loader as dashboardLoader } from "./dashboard";
+import { loader as dashboardLoader } from "./dashboard_";
 
 export default function DashboardUser() {
   const user = useRouteLoaderData<typeof dashboardLoader>('routes/dashboard')!;

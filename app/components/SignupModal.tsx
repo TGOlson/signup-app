@@ -1,8 +1,8 @@
 import { SignupOption } from "@prisma/client";
 import { SerializeFrom } from "@remix-run/node";
-import { Form, useActionData, useNavigate, useNavigation } from "@remix-run/react";
+import { useFetcher } from "@remix-run/react";
 import { RefObject, useEffect, useRef } from "react";
-import { action } from "~/routes/signups.$id";
+import { action } from "~/routes/signup.$id.option.$optionId.participant";
 
 type Props = {
   modalRef: RefObject<HTMLDialogElement>,
@@ -18,17 +18,16 @@ const Label = ({ text }: {text: string}) => (
 
 export default function SignupModal({ modalRef, option, availableSlots }: Props) {
   const formRef = useRef<HTMLFormElement>(null);
-  const navigation = useNavigation();
-  const isSubmitting = navigation.state !== 'idle';
 
-  const actionData = useActionData<typeof action>();
+  const fetcher = useFetcher<typeof action>();
+  const isSubmitting = fetcher.state !== 'idle';
 
   useEffect(() => {
-    if (navigation.state === 'idle' && actionData?.ok) {
+    if (fetcher.state === 'idle' && fetcher.data?.ok) {
       modalRef.current?.close();
       formRef.current?.reset();
     }
-  }, [navigation.state, actionData, modalRef]);
+  }, [fetcher.state, fetcher.data, modalRef]);
 
   return (
     <dialog className="modal" ref={modalRef}>
@@ -38,8 +37,8 @@ export default function SignupModal({ modalRef, option, availableSlots }: Props)
         <h2 className="text-md"><span className="font-bold">Option:</span> {option.title}</h2>
         <h2 className="text-md"><span className="font-bold">Date:</span> {new Date(option.date).toLocaleDateString()}</h2>
         <div className="divider my-2"></div>
-        <Form method="post" ref={formRef}>
-          <input type="hidden" name="signupOptionId" value={option.id} />
+        <fetcher.Form method="post" action={`/signup/${option.signupId}/option/${option.id}/participant`} ref={formRef}>
+          {/* <input type="hidden" name="signupOptionId" value={option.id} /> */}
           <div className="grid grid-cols-4 gap-x-4 gap-y-1">
             <div className="form-control col-span-2">
               <Label text="First Name" />
@@ -67,7 +66,7 @@ export default function SignupModal({ modalRef, option, availableSlots }: Props)
             </div>
           </div>
           <button type="submit" disabled={isSubmitting} className="btn btn-primary mt-4 ml-2 w-20 float-right">Submit</button>
-        </Form>
+        </fetcher.Form>
         <form method="dialog">
           <button className="btn float-right mt-4" disabled={isSubmitting}>Cancel</button>
         </form>

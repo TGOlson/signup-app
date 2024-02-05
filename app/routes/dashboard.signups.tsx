@@ -45,10 +45,10 @@ export default function DashboardSignups() {
                   </td>
                   <td>{new Date(signup.createdAt).toLocaleString()}</td>
                   <td>
-                    <Link className="btn btn-ghost btn-xs" to={`/signups/${signup.id}`}>View</Link>
+                    <Link className="btn btn-ghost btn-xs" to={`/signup/${signup.id}`}>View</Link>
                   </td>
                   <td>
-                    <Link className="btn btn-ghost btn-xs" to={`/signups/${signup.id}/edit`}>Edit</Link>
+                    <Link className="btn btn-ghost btn-xs" to={`/signup/${signup.id}/edit`}>Edit</Link>
                   </td>
                 </tr>
               );
