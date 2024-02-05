@@ -25,10 +25,19 @@
 
 .collapse-plus > .collapse-title:after {
   @apply left-0;
+  @apply mt-1;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+details.collapse summary {
+  @apply flex;
+}
+
+.collapse[open] > :where(.collapse-content) {
+  @apply pb-0;
 }
