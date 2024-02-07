@@ -1,14 +1,15 @@
-import { SignupOption } from "@prisma/client";
+import { SignupOption, User } from "@prisma/client";
 import { SerializeFrom } from "@remix-run/node";
 import { useFetcher } from "@remix-run/react";
 import { RefObject, useEffect, useRef } from "react";
 import { action } from "~/routes/signup.$id.option.$optionId.participant";
+import OptionHeader from "./OptionHeader";
 
 type Props = {
   modalRef: RefObject<HTMLDialogElement>,
   option: SerializeFrom<SignupOption>,
+  user: SerializeFrom<User>,
   availableSlots: number,
-  open?: boolean,
 }
 
 const Label = ({ text }: {text: string}) => (
@@ -17,7 +18,7 @@ const Label = ({ text }: {text: string}) => (
   </div>
 );
 
-export default function SignupModal({ modalRef, option, availableSlots, open = false }: Props) {
+export default function SignupModal({ modalRef, option, availableSlots, user }: Props) {
   const formRef = useRef<HTMLFormElement>(null);
 
   const fetcher = useFetcher<typeof action>();
@@ -31,27 +32,19 @@ export default function SignupModal({ modalRef, option, availableSlots, open = f
   }, [fetcher.state, fetcher.data, modalRef]);
 
   return (
-    <dialog className={`modal ${open ? 'modal-open' : ''}`} ref={modalRef}>
-      <div className="modal-box">
-        <h3 className="font-bold text-2xl mb-2">Sign up!</h3>
-        <div className="divider my-2"></div> 
-        <h2 className="text-md"><span className="font-bold">Option:</span> {option.title}</h2>
-        <h2 className="text-md"><span className="font-bold">Date:</span> {new Date(option.date).toLocaleDateString()}</h2>
+    <dialog className='modal' ref={modalRef}>
+      <div className="modal-box max-w-md">
+        <OptionHeader option={option} />
         <div className="divider my-2"></div>
         <fetcher.Form method="post" action={`/signup/${option.signupId}/option/${option.id}/participant`} ref={formRef}>
-          {/* <input type="hidden" name="signupOptionId" value={option.id} /> */}
           <div className="grid grid-cols-4 gap-x-4 gap-y-1">
             <div className="form-control col-span-2">
               <Label text="First Name" />
-              <input required type="text" name="firstName" placeholder="Jane" className="input input-bordered" disabled={isSubmitting} />
+              <input required type="text" name="firstName" maxLength={50} placeholder="Jane" defaultValue={user.firstName} className="input input-bordered" disabled={isSubmitting} />
             </div>
             <div className="form-control col-span-2">
               <Label text="Last Name" />
-              <input required type="text" name="lastName" placeholder="Doe" className="input input-bordered" disabled={isSubmitting} />
-            </div>
-            <div className="form-control col-span-3">
-              <Label text="Email" />
-              <input required type="email" name="email" placeholder="janedoe@example.com" className="input input-bordered" disabled={isSubmitting} />
+              <input required type="text" name="lastName" maxLength={50} placeholder="Doe" defaultValue={user.lastName} className="input input-bordered" disabled={isSubmitting} />
             </div>
             <div className="form-control col-span-1">
               <Label text="Quanity" />
@@ -61,15 +54,15 @@ export default function SignupModal({ modalRef, option, availableSlots, open = f
                 ))}
               </select>
             </div>
-            <div className="form-control col-span-4">
+            <div className="form-control col-span-3">
               <Label text="Comment (optional)" />
-              <input type="text" name="comment" maxLength={100} placeholder="Super excited for this event!" className="input input-bordered" disabled={isSubmitting} />
+              <input type="text" name="comment" maxLength={50} placeholder="Super excited!" className="input input-bordered" disabled={isSubmitting} />
             </div>
           </div>
-          <button type="submit" disabled={isSubmitting} className="btn btn-primary mt-4 ml-2 w-20 float-right">Submit</button>
+          <button type="submit" disabled={isSubmitting} className="btn btn-primary mt-6 ml-2 float-right">Submit</button>
         </fetcher.Form>
         <form method="dialog">
-          <button className="btn float-right mt-4" disabled={isSubmitting}>Cancel</button>
+          <button className="btn float-right mt-6" disabled={isSubmitting}>Cancel</button>
         </form>
       </div>
       <form method="dialog" className="modal-backdrop">

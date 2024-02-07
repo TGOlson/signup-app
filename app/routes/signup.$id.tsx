@@ -1,10 +1,12 @@
-import { Outlet, useLoaderData } from "@remix-run/react";
+import { Outlet, useLoaderData, useRouteLoaderData } from "@remix-run/react";
 import { LoaderFunctionArgs, TypedResponse, json } from "@remix-run/node";
 import { Participant, Signup, SignupOption as Option, User } from "@prisma/client";
 
 import SignupOption from "~/components/SignupOption";
 import { prisma } from "~/services/db";
 import NavBar from "~/components/NavBar";
+
+import { loader as rootLoader } from "../root";
 
 type SignupWithRefs = Signup & { 
   author: User,
@@ -35,6 +37,7 @@ export async function loader({ params }: LoaderFunctionArgs): Promise<TypedRespo
 }
 
 export default function SignupDetails() {
+  const user = useRouteLoaderData<typeof rootLoader>("root");
   const signup = useLoaderData<typeof loader>();
 
   return (
@@ -49,7 +52,7 @@ export default function SignupDetails() {
         <h2 className="text-2xl font-bold">Signup Options</h2>
         <div className="flex">
           <div className="gap-6 flex flex-col flex-grow">
-            {signup.signupOptions.map(option => <SignupOption key={option.id} option={option}/>)}
+            {signup.signupOptions.map(option => <SignupOption key={option.id} option={option} user={user}/>)}
           </div>
           <Outlet />
         </div>

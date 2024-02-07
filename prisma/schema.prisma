@@ -10,8 +10,8 @@ datasource db {
 model User {
   id           String   @id @default(nanoid())
 
-  firstName    String?
-  lastName     String?
+  firstName    String
+  lastName     String
 
   email        String   @unique
 
@@ -33,7 +33,7 @@ model Signup {
   author      User     @relation(fields: [authorId], references: [id])
   
   signupOptions SignupOption[]  
-  // TODO: config?
+  // TODO: config/settings?
   
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
@@ -50,13 +50,17 @@ model SignupOption {
 
   index       Int
   quantity    Int
-  date        DateTime
-  // TODO: start/end time, location?
+
+  date              DateTime
+  hasTimeComponent  Boolean
+  location          String? // TODO: maybe google coords/id?
 
   participants Participant[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+
+  @@unique([signupId, index])
 }
 
 model Participant {
@@ -69,10 +73,13 @@ model Participant {
 
   firstName String
   lastName  String
-  email     String
-  userId    String?
-  user      User?    @relation(fields: [userId], references: [id])
+  
+  // email // will just use email from the user account for now
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+
+  @@unique([signupOptionId, userId])
 }

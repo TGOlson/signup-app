@@ -20,7 +20,7 @@ export default function DashboardSignups() {
 
   return (
     <div className="m-10">
-      <h1 className="text-3xl font-bold mb-10">Your Signups</h1>
+      <h1 className="text-3xl font-bold mb-10">Signups created</h1>
       <div className="card bg-base-100 shadow-lg">
         <div className="card-body overflow-x-auto ">
         <table className="table">

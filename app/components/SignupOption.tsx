@@ -1,26 +1,27 @@
 import { useRef, useState } from "react";
-import type { Participant, SignupOption } from "@prisma/client";
+import type { Participant, SignupOption, User } from "@prisma/client";
 import { SerializeFrom } from "@remix-run/node";
-import dayjs from "dayjs";
-import { ArrowRightIcon, ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+import { ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 
 import ParticipantChip from "./ParticipantChip";
 import SignupModal from "./SignupModal";
+import OptionHeader from "./OptionHeader";
 
 type Props = {
   option: SerializeFrom<SignupOption & {
     participants: Participant[];
   }>
+  user: SerializeFrom<User> | null | undefined;
 }
 
-export default function SignupOption({ option }: Props) {
+export default function SignupOption({ option, user }: Props) {
   const modalRef = useRef<HTMLDialogElement>(null);
   const availableSlots = option.quantity - option.participants.reduce((acc, participant) => acc + participant.quantity, 0);
 
-  const d = dayjs(option.date);
-  const date = d.format("dddd MMM D, YYYY");
-
   const [expanded, setExpanded] = useState(false);
+
+  // TODO!
+  // const alreadySignedUp = option.participants.some(participant => participant.userId === user?.id);
 
   return (
     <div className="flex">
@@ -32,23 +33,23 @@ export default function SignupOption({ option }: Props) {
     </button>
     <div className="border-l-4 border-primary flex-grow shadow rounded-r bg-base-100">
       <div className="card card-compact">
-        <div className="card-body py-1 grid grid-cols-4 items-center">
-          <div className="grid grid-cols-subgrid col-span-2 md:col-span-3">
-            <div className="col-span-3 md:col-span-2">
-              <h2 className="card-title text-lg">{option.title}</h2>
-              <p className="text-sm italic">{date}</p>
+        <div className="card-body flex flex-row justify-between	py-1 items-center">
+          <div className="flex flex-col items-start md:flex-row md:items-center md:flex-grow md:justify-between">
+            <div className="mb-1 md:mb-0">
+              <OptionHeader option={option} />
             </div>
-            <div className="col-span-1 justify-self-center">
-              <span className="badge badge-ghost">{availableSlots} slots available</span>
-            </div>
+            <span className="bg-base-200 text-sm p-1 px-2 rounded-lg md:mr-4">{availableSlots} slots available</span>
           </div>
-          <div className="col-span-2 md:col-span-1 justify-self-end">
-            <button 
-              className={`btn btn-primary ${availableSlots > 0 ? 'btn-outline' : 'btn-disabled'} min-w-28`}
-              onClick={() => modalRef.current?.showModal()} 
-            >
-              Sign Up<ArrowRightIcon className="h-4 w-4"/>
-            </button>
+          <div className="">
+            {user 
+              ? <button 
+                className={`btn btn-primary ${availableSlots > 0 ? 'btn-outline' : 'btn-disabled'} min-w-[88px]`}
+                onClick={() => modalRef.current?.showModal()} 
+              >
+                Sign Up
+                {/* {alreadySignedUp ? 'Edit' : 'Sign Up'} */}
+              </button>
+            : "Login to signup"}
           </div>
         </div>
       </div>
@@ -72,14 +73,20 @@ export default function SignupOption({ option }: Props) {
               <div className="card-body">
                 <p className="text-sm font-bold">Signups</p>
                 {!option.participants.length ? <p className="text-sm text-gray-400 italic">No signups yet!</p> : null}
-                {option.participants.map(participant => <ParticipantChip key={participant.id} participant={participant} />)}
+                {option.participants.map(participant => 
+                  <ParticipantChip 
+                    key={participant.id} 
+                    participant={participant} 
+                    isUser={user?.id === participant.userId}
+                  />)
+                }
               </div>
             </div>
           </div>
         </div>
       ): null}
     </div>
-    <SignupModal option={option} availableSlots={availableSlots} modalRef={modalRef} />
+    {user ? <SignupModal option={option} availableSlots={availableSlots} modalRef={modalRef} user={user} /> : null}    
   </div>
   );
 }
