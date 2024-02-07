@@ -6,6 +6,7 @@ import { ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import ParticipantChip from "./ParticipantChip";
 import SignupModal from "./SignupModal";
 import OptionHeader from "./OptionHeader";
+import { Link } from "@remix-run/react";
 
 type Props = {
   option: SerializeFrom<SignupOption & {
@@ -51,7 +52,8 @@ export default function SignupOption({ option, user }: Props) {
                 Sign Up
                 {/* {alreadySignedUp ? 'Edit' : 'Sign Up'} */}
               </button>
-            : "Login to signup"}
+            : <Link className="btn btn-link" to={`/login?returnTo=/signup/${option.signupId}`}>Login to signup</Link>
+            }
           </div>
         </div>
       </div>

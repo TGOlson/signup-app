@@ -1,9 +1,12 @@
-import { Form } from "@remix-run/react";
+import { Form, useParams, useSearchParams } from "@remix-run/react";
 import GoogleIcon from "../components/GoogleIcon";
 import { authenticator } from "~/services/auth.server";
 import { LoaderFunctionArgs } from "@remix-run/node";
 
 export default function Login() {
+  const [params] = useSearchParams();
+  const returnTo = params.get('returnTo');
+
   return (
     <div className="w-full py-20">
       <div className="card shrink-0 w-full max-w-sm bg-base-100 mx-auto gap-y-8">
@@ -22,7 +25,7 @@ export default function Login() {
           <div className="divider">
           <p className="text-gray-500 text-xs">Or continue with</p> 
           </div>
-          <Form action="/auth/google" method="post">
+          <Form action={`/auth/google${returnTo ? `/?returnTo=${returnTo}` : ''}`} method="post">
             <button className="btn" style={{width: '100%'}}>
               <GoogleIcon /> Sign in with Google 
             </button>

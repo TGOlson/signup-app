@@ -1,4 +1,4 @@
-import { createCookieSessionStorage } from "@remix-run/node";
+import { createCookie, createCookieSessionStorage } from "@remix-run/node";
 
 // export the whole sessionStorage object
 export const sessionStorage = createCookieSessionStorage({
@@ -10,6 +10,14 @@ export const sessionStorage = createCookieSessionStorage({
     secrets: [process.env.AUTH_SESSION_SECRET!],
     secure: process.env.NODE_ENV === "production", // enable this in prod only
   },
+});
+
+export const returnToCookie = createCookie("return-to", {
+  path: "/",
+  httpOnly: true,
+  sameSite: "lax",
+  maxAge: 60, // 1 minute because it makes no sense to keep it for a long time
+  secure: process.env.NODE_ENV === "production", // enable this in prod only
 });
 
 // you can also export the methods individually for your own usage
