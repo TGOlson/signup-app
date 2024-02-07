@@ -47,10 +47,12 @@ export default function SignupDetails() {
           <p className="text-sm">Created by {signup.author.firstName} {signup.author.lastName}</p>
         </div>
         <h2 className="text-2xl font-bold">Signup Options</h2>
-        <div className="gap-6 flex flex-col">
-          {signup.signupOptions.map(option => <SignupOption key={option.id} option={option}/>)}
+        <div className="flex">
+          <div className="gap-6 flex flex-col flex-grow">
+            {signup.signupOptions.map(option => <SignupOption key={option.id} option={option}/>)}
+          </div>
+          <Outlet />
         </div>
-        <Outlet />
       </div>
     </div>
   )
