@@ -25,25 +25,27 @@ export default function SignupOption({ option, user }: Props) {
 
   return (
     <div className="flex">
-    <button className="btn btn-sm btn-outline btn-primary btn-circle border-0 mt-6 mr-1">
-      {expanded 
-        ? <ChevronDownIcon onClick={() => setExpanded(!expanded)} className="h-6 w-6 "/>
-        : <ChevronRightIcon onClick={() => setExpanded(!expanded)} className="h-6 w-6 "/>
-      }
-    </button>
     <div className="border-l-4 border-primary flex-grow shadow rounded-r bg-base-100">
       <div className="card card-compact">
-        <div className="card-body flex flex-row justify-between	py-1 items-center">
-          <div className="flex flex-col items-start md:flex-row md:items-center md:flex-grow md:justify-between">
-            <div className="mb-1 md:mb-0">
+        <div className="card-body flex flex-row justify-between	items-center !pl-0.5 gap-0">
+          <button className="btn btn-sm btn-outline btn-primary btn-circle border-0 md:mx-1">
+            {expanded 
+              ? <ChevronDownIcon onClick={() => setExpanded(!expanded)} className="h-6 w-6 "/>
+              : <ChevronRightIcon onClick={() => setExpanded(!expanded)} className="h-6 w-6 "/>
+            }
+          </button>
+          <div className="flex flex-col items-start flex-grow md:flex-row md:items-center  md:justify-between">
+            <div className="flex mb-1 md:mb-0">
+              <div>
               <OptionHeader option={option} />
+              </div>
             </div>
-            <span className="bg-base-200 text-sm p-1 px-2 rounded-lg md:mr-4">{availableSlots} slots available</span>
+            <span className="bg-base-200 text-sm p-1 px-2 rounded-lg md:mr-6">{availableSlots} slots available</span>
           </div>
           <div className="">
             {user 
               ? <button 
-                className={`btn btn-primary ${availableSlots > 0 ? 'btn-outline' : 'btn-disabled'} min-w-[88px]`}
+                className={`btn btn-accent ${availableSlots > 0 ? '' : 'btn-disabled'} min-w-[88px]`}
                 onClick={() => modalRef.current?.showModal()} 
               >
                 Sign Up
