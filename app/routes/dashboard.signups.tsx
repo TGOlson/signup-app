@@ -1,7 +1,7 @@
 import { LoaderFunctionArgs, TypedResponse, json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 
-import { prisma } from "~/services/db";
+import { prisma } from "~/services/db.server";
 import { requireUser } from "~/services/auth.server";
 import { Signup } from "@prisma/client";
 

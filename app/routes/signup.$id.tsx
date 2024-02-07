@@ -3,7 +3,7 @@ import { LoaderFunctionArgs, TypedResponse, json } from "@remix-run/node";
 import { Participant, Signup, SignupOption as Option, User } from "@prisma/client";
 
 import SignupOption from "~/components/SignupOption";
-import { prisma } from "~/services/db";
+import { prisma } from "~/services/db.server";
 import NavBar from "~/components/NavBar";
 
 import { loader as rootLoader } from "../root";

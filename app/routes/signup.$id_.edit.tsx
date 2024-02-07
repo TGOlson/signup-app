@@ -2,7 +2,7 @@ import { useLoaderData } from "@remix-run/react";
 import { LoaderFunctionArgs, TypedResponse, json, redirect } from "@remix-run/node";
 import { Signup } from "@prisma/client";
 
-import { prisma } from "~/services/db";
+import { prisma } from "~/services/db.server";
 import { authenticator } from "~/services/auth.server";
 
 export async function loader({ params, request }: LoaderFunctionArgs): Promise<TypedResponse<Signup>> {

@@ -1,6 +1,6 @@
 import { ActionFunctionArgs } from "@remix-run/node";
 import { requireUser } from "~/services/auth.server";
-import { prisma } from "~/services/db";
+import { prisma } from "~/services/db.server";
 
 // TODO: should also support updates?
 export async function action({request, params}: ActionFunctionArgs) {

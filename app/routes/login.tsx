@@ -28,7 +28,7 @@ export default function Login() {
             </button>
           </Form>
         </div>
-    </div>
+      </div>
     </div>
   );
 }

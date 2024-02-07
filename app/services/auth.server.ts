@@ -2,7 +2,7 @@ import { Authenticator } from "remix-auth";
 import { sessionStorage } from "~/services/session.server";
 import { GoogleStrategy } from 'remix-auth-google'
 import { User } from "@prisma/client";
-import { prisma } from "./db";
+import { prisma } from "./db.server";
 
 // Create an instance of the authenticator, pass a generic with what
 // strategies will return and will store in the session
@@ -30,7 +30,7 @@ const googleStrategy = new GoogleStrategy(
   }
 )
 
-authenticator.use(googleStrategy)
+authenticator.use(googleStrategy);
 
 export async function requireUser(request: Request): Promise<User> {
   return authenticator.isAuthenticated(request, {
