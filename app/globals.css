@@ -2,30 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
 .btn {
-  @apply h-10;
-  @apply min-h-10;
-  @apply font-medium;
-  @apply no-animation;
+  /* @apply h-10; */
+  /* @apply min-h-10; */
+  /* @apply font-medium; */
+  /* @apply no-animation; */
 }
+
+/* body {
+  @apply bg-secondary;
+} */
 
 .collapse-plus > .collapse-title:after {
   @apply left-0;
-  @apply mt-1;
+  /* @apply mt-1; */
 }
 
 @layer utilities {
@@ -34,10 +24,10 @@
   }
 }
 
-details.collapse summary {
+/* details.collapse summary {
   @apply flex;
 }
 
 .collapse[open] > :where(.collapse-content) {
   @apply pb-0;
-}
+} */

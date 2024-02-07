@@ -1,9 +1,13 @@
 import type { Participant, SignupOption } from "@prisma/client";
 import { SerializeFrom } from "@remix-run/node";
-import { Link } from "@remix-run/react";
+// import { Link } from "@remix-run/react";
 import SignupModal from "./SignupModal";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import dayjs from "dayjs";
+import { ArrowRightIcon, ChevronRightIcon, PlusIcon } from "@heroicons/react/16/solid";
+// import ArrowRightIcon from "./ArrowRightIcon";
+
+
 
 type Props = {
   option: SerializeFrom<SignupOption & {
@@ -17,30 +21,46 @@ export default function SignupOption({ option }: Props) {
 
   const d = dayjs(option.date);
   const date = d.format("dddd MMM D, YYYY");
-  // const time = d.format("h:mm A");
+
+  const [expanded, setExpanded] = useState(false);
+  
 
   return (
-    <div key={option.id} className="card border shadow">
-      <details className="card-body py-4 px-4 pr-6 collapse collapse-plus">
-        <summary className="collapse-title p-0 pl-6 flex flex-col justify-center">
-          <div className="flex flex-row items-center">
-            <div className="flex-grow">
-              <h2 className="card-title text-xl">{option.title}</h2>
-              <p className="text-sm italic">{date}</p>
-              {/* <p className="text-sm italic text-gray-500">{time}</p> */}
-            </div>
-            <span className="badge badge-warning min-w-32 flex-grow-0 mr-4">{availableSlots} slots available</span>
-            <button className="btn btn-primary btn-outline" onClick={() => modalRef.current?.showModal()} disabled={availableSlots === 0}>Sign Up</button>
+    <div className="flex">
+    <button className="btn btn-sm btn-outline btn-accent btn-circle border-0 mt-3">
+      <ChevronRightIcon onClick={() => setExpanded(!expanded)} className="h-6 w-6 "/>
+    </button>
+    <div className="border-l-4 border-accent flex-grow shadow rounded-r">
+      <div className="card card-compact">
+        <div className="card-body py-1 grid grid-cols-4 items-center">
+          <div className="col-span-2">
+            <h2 className="card-title text-lg">{option.title}</h2>
+            <p className="text-sm italic">{date}</p>
           </div>
-        </summary>
-        <div className="collapse-content p-0 pb-0 pl-6">
-          <div className="divider my-2 mb-3"></div> 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="col-span-1">
-              <p className="text-xs font-bold mb-1">Details</p>
+          <div className="col-span-1 justify-self-end">
+            <span className="badge col-span-1">{availableSlots} slots available</span>
+          </div>
+          <div className="col-span-1 justify-self-end">
+            <button 
+              className="btn btn-primary btn-outline" 
+              onClick={() => modalRef.current?.showModal()} 
+              disabled={availableSlots === 0}>
+                Sign Up<ArrowRightIcon className="h-4 w-4"/>
+            </button>
+          </div>
+        </div>
+      </div>
+      {expanded ? (
+        <div className="grid grid-cols-4 gap-x-4">
+          <div className="divider col-span-4 m-0 mx-8"/>
+          <div className="col-span-2 card card-compact">
+            <div className="card-body">
+              <p className="text-xs font-bold mb-1">More info</p>
               <p className="text-sm">{option.description}</p>
             </div>
-            <div className="flex flex-col col-span-1">
+          </div>
+          <div className="col-span-2 card card-compact">
+            <div className="card-body">
               <p className="text-xs font-bold mb-1">Signups</p>
               {!option.participants.length ? <p className="text-sm text-gray-400 italic">No signups yet!</p> : null}
               {option.participants.map(participant => (
@@ -53,8 +73,9 @@ export default function SignupOption({ option }: Props) {
             </div>
           </div>
         </div>
-      </details>
-      <SignupModal option={option} availableSlots={availableSlots} modalRef={modalRef} />
+      ): null}
     </div>
+  </div>
+      // <SignupModal option={option} availableSlots={availableSlots} modalRef={modalRef} />
   );
 }
