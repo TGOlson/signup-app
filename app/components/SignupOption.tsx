@@ -25,7 +25,7 @@ export default function SignupOption({ option, user }: Props) {
 
   return (
     <div className="flex">
-    <div className="border-l-4 border-primary flex-grow shadow rounded-r bg-base-100">
+    <div className="border-l-4 border-primary flex-grow shadow-md rounded-r bg-base-100">
       <div className="card card-compact">
         <div className="card-body flex flex-row justify-between	items-center !pl-0.5 gap-0">
           <button className="btn btn-sm btn-outline btn-primary btn-circle border-0 md:mx-1">
@@ -56,23 +56,23 @@ export default function SignupOption({ option, user }: Props) {
         </div>
       </div>
       {expanded ? (
-        <div className="grid grid-cols-8 gap-x-4">
+        <div className="grid grid-cols-8">
           <div className="col-span-8 divider mx-4 my-0"/>
-          <div className="col-span-4">
-            <div className="card card-compact">
-              <div className="card-body">
+          <div className="col-span-5">
+            <div className="card">
+              <div className="card-body py-4">
                 <p className="text-sm font-bold">Details</p>
                 <p className="text-sm">{option.description}</p>
               </div>
-              <div className="card-body">
+              <div className="card-body py-4">
                 <p className="text-sm font-bold">Location</p>
                 <p className="text-sm text-gray-400 italic">n/a</p>
               </div>
             </div>
           </div>
-          <div className="col-span-4">
-            <div className="card card-compact">
-              <div className="card-body">
+          <div className="col-span-3">
+            <div className="card">
+              <div className="card-body py-4">
                 <p className="text-sm font-bold">Signups</p>
                 {!option.participants.length ? <p className="text-sm text-gray-400 italic">No signups yet!</p> : null}
                 {option.participants.map(participant => 

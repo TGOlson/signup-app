@@ -33,7 +33,7 @@ export default function SignupModal({ modalRef, option, availableSlots, user }: 
 
   return (
     <dialog className='modal' ref={modalRef}>
-      <div className="modal-box max-w-md">
+      <div className="modal-box rounded-md max-w-md">
         <OptionHeader option={option} />
         <div className="divider my-2"></div>
         <fetcher.Form method="post" action={`/signup/${option.signupId}/option/${option.id}/participant`} ref={formRef}>

@@ -43,8 +43,8 @@ export default function SignupDetails() {
   return (
     <div className="flex flex-col min-h-screen">
       <NavBar />
-      <div className="bg-kiwi flex-grow">
-        <div className="max-w-3xl mx-auto flex flex-col">
+      <div className="bg-diagonal flex-grow">
+        <div className="max-w-3xl mx-auto flex flex-col mb-10">
           <div className="card card-compact my-5">
             <div className="card-body">
               <h1 className="text-6xl font-bold">{signup.title}</h1>
