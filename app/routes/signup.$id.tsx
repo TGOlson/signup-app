@@ -1,4 +1,4 @@
-import { Outlet, useLoaderData, useRouteLoaderData } from "@remix-run/react";
+import { Link, Outlet, useLoaderData, useRouteLoaderData } from "@remix-run/react";
 import { LoaderFunctionArgs, TypedResponse, json } from "@remix-run/node";
 import { Participant, Signup, SignupOption as Option, User } from "@prisma/client";
 
@@ -7,6 +7,7 @@ import { prisma } from "~/services/db.server";
 import NavBar from "~/components/NavBar";
 
 import { loader as rootLoader } from "../root";
+import { EnvelopeIcon } from "@heroicons/react/24/outline";
 
 type SignupWithRefs = Signup & { 
   author: User,
@@ -49,7 +50,10 @@ export default function SignupDetails() {
             <div className="card-body">
               <h1 className="text-6xl font-bold">{signup.title}</h1>
               <p className="text-lg text-gray-600">{signup.description}</p>
-              <p className="text-sm">Created by {signup.author.firstName} {signup.author.lastName}</p>
+              <p className="text-sm flex items-center gap-1">
+                Created by {signup.author.firstName} {signup.author.lastName}
+                <a href={`mailto:${signup.author.email}?subject=${signup.title}`} className="link"><EnvelopeIcon className="h-4 w-4" /></a>
+              </p>
             </div>
           </div>
           <div className="gap-6 flex flex-col p-0">

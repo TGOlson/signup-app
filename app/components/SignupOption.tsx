@@ -39,10 +39,8 @@ export default function SignupOption({ option, user }: Props) {
             }
           </button>
           <div className="flex flex-col items-start flex-grow md:flex-row md:items-center  md:justify-between">
-            <div className="flex mb-1 md:mb-0">
-              <div>
-                <OptionHeader option={option} />
-              </div>
+            <div className="flex flex-col mb-2 md:mb-0">
+              <OptionHeader option={option} />
             </div>
             <span className="bg-accent text-accent-content text-sm p-1 px-2 rounded-lg md:mr-6">{availableSlots} slots available</span>
           </div>
@@ -67,33 +65,39 @@ export default function SignupOption({ option, user }: Props) {
         </div>
       </div>
       {expanded ? (
-        <div className="grid grid-cols-8">
-          <div className="col-span-8 divider mx-4 my-0"/>
-          <div className="col-span-4 md:col-span-5">
+        <div className="grid grid-cols-10 mb-2">
+          <div className="col-span-10 divider mx-8 my-0"/>
+          <div className="col-span-10 sm:col-span-6">
             <div className="card">
               <div className="card-body py-4">
                 <p className="text-sm font-bold">Details</p>
                 <p className="text-sm">{option.description}</p>
               </div>
-              <div className="card-body py-4">
-                <p className="text-sm font-bold">Location</p>
-                <p className="text-sm text-gray-400 italic">n/a</p>
-              </div>
+              {option.location ? (
+                <div className="card-body py-4">
+                  <p className="text-sm font-bold">Location</p>
+                  <p className="text-sm text-gray-400 italic">{option.location}</p>
+                </div>
+              ) : null}
             </div>
           </div>
-          <div className="col-span-4 md:col-span-3">
+          <div className="col-span-10 sm:col-span-4">
             <div className="card">
-              <div className="card-body gap-0 py-4">
-                <p className="text-sm font-bold mb-2">Signups</p>
+              <div className="card-body gap-1 py-4 pt-0 sm:py-4">
+                <p className="text-sm font-bold mb-1">Signups</p>
                 {!option.participants.length ? <p className="text-sm text-gray-400 italic">No signups yet!</p> : null}
                 {option.participants.map(({id, firstName, lastName, quantity, comment, userId}) => 
-                  <div key={id} className="flex flex-col">
+                <div key={id} className="indicator">
+                  {quantity > 1 ? <span className="indicator-item badge badge-primary">+{quantity - 1}</span> : null}
+                  <div  className="flex flex-col bg-base-200 p-1 px-2 rounded-lg self-baseline">
+                    {/* bg-accent text-accent-content text-sm p-1 px-2 rounded-lg md:mr-6 */}
                     <div className="flex gap-1 items-center">
-                      <span className="text-sm truncate">{firstName} {lastName}</span>
-                      {quantity > 1 ? <span className="badge badge-ghost">+{quantity - 1}</span> : null}
                       {participant?.userId === userId ? <button className="btn btn-link btn-xs px-0" onClick={openModal}><PencilSquareIcon className="h-4 w-4" /></button> : null}
+                      <span className="text-sm font-semibold truncate">{firstName} {lastName}</span>
+                      {/* {quantity > 1 ? <span className="badge badge-ghost">+{quantity - 1}</span> : null} */}
                     </div>
-                    {comment ? <span className="text-sm text-gray-400 italic truncate">{comment}</span> : null}
+                    {comment ? <span className="text-sm italic truncate">{comment}</span> : null}
+                  </div>
                   </div>
                 )}
               </div>
