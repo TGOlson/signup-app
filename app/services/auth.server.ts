@@ -17,14 +17,19 @@ const googleStrategy = new GoogleStrategy(
   // async ({ accessToken, refreshToken, extraParams, profile }) => {
   async ({ profile }) => {
     const email = profile.emails[0].value;
+    const firstName = profile.name.givenName;
+    const lastName = profile.name.familyName;
 
     return await prisma.user.upsert({
       where: {email},
-      update: {},
+      update: {
+        firstName,
+        lastName,
+      },
       create: {
         email, 
-        firstName: profile.name.givenName,
-        lastName: profile.name.familyName,
+        firstName,
+        lastName,
       },
     });
   }

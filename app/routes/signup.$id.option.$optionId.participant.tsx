@@ -5,8 +5,20 @@ import { prisma } from "~/services/db.server";
 // TODO: should also support updates?
 export async function action({request, params}: ActionFunctionArgs) {
   const user = await requireUser(request);
-
   const signupOptionId = String(params.optionId);
+
+  if (request.method === 'DELETE') {
+    await prisma.participant.delete({
+      where: {
+        signupOptionId_userId: {
+          signupOptionId,
+          userId: user.id,
+        },
+      }
+    });
+
+    return ({ ok: true });
+  }
 
   const formData = await request.formData();
 
@@ -24,7 +36,21 @@ export async function action({request, params}: ActionFunctionArgs) {
     comment,
   };
 
-  await prisma.participant.create({ data });
+  await prisma.participant.upsert({
+    where: {
+      signupOptionId_userId: {
+        signupOptionId,
+        userId: user.id,
+      },
+    },
+    update: {
+      firstName,
+      lastName,
+      quantity,
+      comment,
+    },
+    create: data,
+  });
 
   return ({ ok: true });
 }
