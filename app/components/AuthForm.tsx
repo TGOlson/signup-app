@@ -1,9 +1,7 @@
 import {
   TextInput,
-  Text,
   Paper,
   Group,
-  PaperProps,
   Button,
   Divider,
   Anchor,
@@ -12,41 +10,35 @@ import {
 } from '@mantine/core';
 
 import { GoogleButton } from './GoogleButton';
-import { Form, useSearchParams } from '@remix-run/react';
+import { Form, Link, useSearchParams } from '@remix-run/react';
 
-export function AuthForm(props: PaperProps) {
+type Props = {
+  type: 'login' | 'signup';
+}
+
+export function AuthForm({ type }: Props) {
   const [params] = useSearchParams();
   const returnTo = params.get('returnTo');
   const googleAuthUrl = `/auth/google${returnTo ? `?returnTo=${returnTo}` : ''}`;
 
-  // const [type, toggle] = useToggle(['login', 'register']);
-  // const form = useForm({
-  //   initialValues: {
-  //     email: '',
-  //     name: '',
-  //     password: '',
-  //     terms: true,
-  //   },
-
-  //   validate: {
-  //     email: (val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
-  //     password: (val) => (val.length <= 6 ? 'Password should include at least 6 characters' : null),
-  //   },
-  // });
-
   return (
-    <Stack className='max-w-sm mx-auto pt-24' gap={0}>
+    <Stack className='max-w-sm mx-auto pt-16' gap={0}>
+      <Title className='text-center' order={1} mb="lg" fw={500}>
+        {type === 'login' ? 'Sign in to your account' : 'Create an account'}
+      </Title>
       <Paper radius="md" p="xl" withBorder>
-        <Title className='text-center' order={3} mb="lg" fw={500}>Sign in to your account</Title>
         <Form action='/auth/email' method='POST'>
           <Stack>
-            <TextInput
-              required
-              label="Email"
-              name='email'
-              placeholder="hello@example.com"
-            />
-            <Button type="submit" fullWidth>Sign in</Button>
+            {type === 'login' ? null : (
+              <Group grow>
+                <TextInput required label="First name" name='firstName' placeholder="Jane"/>
+                <TextInput required label="Last name" name='lastName' placeholder="Doe"/>
+              </Group>
+            )}
+            <TextInput required label="Email" name='email' placeholder="hello@example.com"/>
+            <Button type="submit" fullWidth>
+              {type === 'login' ? 'Sign in' : 'Create account'}
+            </Button>
           </Stack>
         </Form>
 
@@ -55,12 +47,13 @@ export function AuthForm(props: PaperProps) {
         <Form action={googleAuthUrl} method="POST">
           <GoogleButton type='submit' fullWidth>Sign in with Google</GoogleButton>
         </Form>
+
       </Paper>
-      <div>
-        <Anchor component="button" type="button" c="dimmed" size="xs">
-          {"Don't have an account? Register"}
+      <Group mt='xs'>
+        <Anchor component={Link} to={type === 'login' ? '/signup' : '/login'} type="button" c="dimmed" size="xs">
+          {type === 'login' ? "Don't have an account? Register" : "Already have an account? Sign in"}
         </Anchor>
-      </div>
+      </Group>
     </Stack>
   );
 }

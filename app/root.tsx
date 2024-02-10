@@ -5,7 +5,7 @@ import '@mantine/dates/styles.css';
 import '@mantine/notifications/styles.css';
 
 import { cssBundleHref } from '@remix-run/css-bundle';
-import type { LinksFunction, LoaderFunctionArgs, TypedResponse } from "@remix-run/node";
+import type { LinksFunction, LoaderFunctionArgs, MetaFunction, TypedResponse } from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -29,6 +29,14 @@ export const links: LinksFunction = () => [
 export async function loader({ request }: LoaderFunctionArgs): Promise<TypedResponse<User | null>> {
   return authenticator.isAuthenticated(request).then(json);
 }
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "New Remix App" },
+    { name: "description", content: "Welcome to Remix!" },
+  ];
+};
+
 
 export default function App() {
   return (
