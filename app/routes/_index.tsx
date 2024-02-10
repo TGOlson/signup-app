@@ -1,5 +1,5 @@
 import type { MetaFunction } from "@remix-run/node";
-import NavBar from "~/components/NavBar";
+import { HeaderMenu } from "~/components/HeaderMenu";
 
 export const meta: MetaFunction = () => {
   return [
@@ -11,7 +11,7 @@ export const meta: MetaFunction = () => {
 export default function Index() {
   return (
     <div>
-      <NavBar />
+      <HeaderMenu />
       <div className="hero min-h-screen bg-base-200">
         <div className="hero-content text-center">
           <div className="max-w-md">

@@ -1,3 +1,4 @@
+import { Title } from "@mantine/core";
 import { SignupOption } from "@prisma/client";
 import { SerializeFrom } from "@remix-run/node";
 import dayjs from "dayjs";
@@ -17,7 +18,7 @@ export default function OptionHeader({option, editable = false}: Props) {
     <>
       {editable
         ? <input type="text" required defaultValue={option.title} className="input input-bordered input-md w-full font-bold text-lg" />
-        : <h1 className="font-bold text-lg">{option.title}</h1>
+        : <Title order={4}>{option.title}</Title>
       }
       {/* <h2 className="font-bold text-lg">{option.title}</h2> */}
       {editable

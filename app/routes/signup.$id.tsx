@@ -9,6 +9,8 @@ import NavBar from "~/components/NavBar";
 import { loader as rootLoader } from "../root";
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
 import { handle } from "./signup.$id.edit";
+import { Title, Text } from "@mantine/core";
+import { HeaderMenu } from "~/components/HeaderMenu";
 
 type SignupWithRefs = Signup & { 
   author: User,
@@ -47,7 +49,7 @@ export default function SignupDetails() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <NavBar />
+      <HeaderMenu />
       <div className="bg-diagonal flex-grow">
         <div className="max-w-3xl mx-auto flex flex-col mb-10">
           <Outlet />
@@ -55,11 +57,11 @@ export default function SignupDetails() {
             <div className="card-body">
               {editable
                 ? <input required type="text" defaultValue={signup.title} className="input input-bordered input-lg h-20 text-6xl font-bold" />
-                : <h1 className="text-6xl font-bold">{signup.title}</h1>
+                : <Title className="!text-6xl" order={1}>{signup.title}</Title>
               }
               {editable
                 ? <textarea required defaultValue={signup.description} rows={3} className="textarea textarea-bordered textarea-lg text-lg text-gray-600" />
-                : <p className="text-lg text-gray-600">{signup.description}</p>
+                : <Text fz="lg">{signup.description}</Text>
               }
               <p className="text-sm flex items-center gap-1">
                 Created by {signup.author.firstName} {signup.author.lastName}
