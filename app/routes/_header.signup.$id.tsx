@@ -1,4 +1,4 @@
-import { Outlet, UIMatch, useLoaderData, useMatches, useRouteLoaderData } from "@remix-run/react";
+import { Outlet, useLoaderData, useRouteLoaderData } from "@remix-run/react";
 import { LoaderFunctionArgs, TypedResponse, json } from "@remix-run/node";
 import { Participant, Signup, SignupOption as Option, User } from "@prisma/client";
 
@@ -7,8 +7,8 @@ import { prisma } from "~/services/db.server";
 
 import { loader as rootLoader } from "../root";
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
-import { handle } from "./signup.$id.edit";
-import { Title, Text, Stack, Container, HoverCard, Group, Code } from "@mantine/core";
+import { Title, Text, Stack, Container, HoverCard, Group, Code, Table } from "@mantine/core";
+import SignupOptionRow from "~/components/SignupOptionRow";
 
 type SignupWithRefs = Signup & { 
   author: User,
@@ -41,25 +41,18 @@ export async function loader({ params }: LoaderFunctionArgs): Promise<TypedRespo
 export default function SignupDetails() {
   const user = useRouteLoaderData<typeof rootLoader>("root");
   const signup = useLoaderData<typeof loader>();
-  const matches = useMatches() as UIMatch<unknown, typeof handle>[];
 
-  const editable = matches.some(match => match.handle?.editable);
+  // const matches = useMatches() as UIMatch<unknown, typeof handle>[];
+  // const editable = matches.some(match => match.handle?.editable);
 
   return (
-    <Container size="sm" mt='xl'>
-      <Stack gap={8}>
-        <Outlet />
-        {editable
-          ? <input required type="text" defaultValue={signup.title} className="input input-bordered input-lg h-20 text-6xl font-bold" />
-          : <Title className="!text-6xl" my='md' order={1}>{signup.title}</Title>
-        }
-        {editable
-          ? <textarea required defaultValue={signup.description} rows={3} className="textarea textarea-bordered textarea-lg text-lg text-gray-600" />
-          : <Text fz="lg">{signup.description}</Text>
-        }
+    <Container size="sm" p={0}>
+      <Outlet />
+      <Stack gap={8} p={12}>
+        <Title className="!text-6xl" my='md' order={1}>{signup.title}</Title>
+        <Text fz="lg">{signup.description}</Text>
 
         <Group>
-
           <HoverCard shadow="md">
             <HoverCard.Target>
               <Group gap={6}>
@@ -75,11 +68,28 @@ export default function SignupDetails() {
             </HoverCard.Dropdown>
           </HoverCard>
         </Group>
+      </Stack>
+
+        <Table highlightOnHover mt='xl'>
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th></Table.Th>
+              <Table.Th>Details</Table.Th>
+              <Table.Th className="!text-center">Slots open</Table.Th>
+              <Table.Th className="!text-center">Sign up</Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>
+            {signup.signupOptions.map(option => (
+              <SignupOptionRow key={option.id} option={option} user={user} />
+            ))}
+          </Table.Tbody>
+        </Table>
 
         <Stack gap={12} mt='xl'>
-          {signup.signupOptions.map(option => <SignupOption key={option.id} option={option} user={user} editable={editable}/>)}
+          {signup.signupOptions.map(option => <SignupOption key={option.id} option={option} user={user} editable={false}/>)}
         </Stack>
-      </Stack>
+      
     </Container>
   )
 }
