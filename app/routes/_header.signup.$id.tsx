@@ -63,8 +63,8 @@ export default function SignupDetails() {
           <HoverCard shadow="md">
             <HoverCard.Target>
               <Group gap={6}>
-                <Text size="sm">Created by {signup.author.firstName} {signup.author.lastName}</Text>
-                <EnvelopeIcon className="h-4 w-4" />
+                <Text size="sm" c='dimmed'>Created by {signup.author.firstName} {signup.author.lastName}</Text>
+                <Text c='dimmed'><EnvelopeIcon className="h-4 w-4" /></Text>
               </Group>
             </HoverCard.Target>
             <HoverCard.Dropdown>
