@@ -1,20 +1,22 @@
 import {
   Group,
   Button,
-  Box,
   Title,
+  AppShell,
 } from '@mantine/core';
-import { Link, useRouteLoaderData } from '@remix-run/react';
+import { Link, Outlet, useRouteLoaderData } from '@remix-run/react';
 
 import { loader } from "~/root";
 
-export function HeaderMenu() {
+export default function Header() {
   const user = useRouteLoaderData<typeof loader>("root");
 
   return (
-    <Box pb={120}>
-      <header className='h-[60px] px-4 border-b'>
-        <Group justify="space-between" h="100%">
+    <AppShell
+      header={{height: 60}}
+    >
+      <AppShell.Header classNames={{header: 'px-4'}}>
+        <Group justify="space-between" h="100%">          
           <Title order={1}>SignupApp</Title>
 
           <Group h="100%" gap={0} visibleFrom="sm">
@@ -33,7 +35,10 @@ export function HeaderMenu() {
             }
           </Group>
         </Group>
-      </header>
-    </Box>
+      </AppShell.Header>
+      <AppShell.Main>
+        <Outlet />
+      </AppShell.Main>
+    </AppShell>
   );
 }

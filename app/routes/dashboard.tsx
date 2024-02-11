@@ -1,7 +1,12 @@
-import { Form, Link, Outlet } from "@remix-run/react";
-import { loader } from "./auth.me";
+import { Form, Link, Outlet, json } from "@remix-run/react";
+import { requireUser } from "~/services/auth.server";
+import { LoaderFunctionArgs, TypedResponse } from "@remix-run/node";
+import { User } from "@prisma/client";
 
-export { loader };
+export async function loader({ request }: LoaderFunctionArgs): Promise<TypedResponse<User>> {
+  return requireUser(request).then(json);
+}
+
 
 export default function Dashboard() {
   return (

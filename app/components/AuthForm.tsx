@@ -23,7 +23,7 @@ export function AuthForm({ type }: Props) {
 
   return (
     <Stack className='max-w-sm mx-auto pt-16' gap={0}>
-      <Title className='text-center' order={1} mb="lg" fw={500}>
+      <Title className='text-center' order={2} mb="lg" fw={500}>
         {type === 'login' ? 'Sign in to your account' : 'Create an account'}
       </Title>
       <Paper radius="md" p="xl" withBorder>
