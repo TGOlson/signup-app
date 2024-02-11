@@ -8,7 +8,7 @@ import { prisma } from "~/services/db.server";
 import { loader as rootLoader } from "../root";
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
 import { handle } from "./signup.$id.edit";
-import { Title, Text, Stack, Container } from "@mantine/core";
+import { Title, Text, Stack, Container, HoverCard, Group, Code } from "@mantine/core";
 
 type SignupWithRefs = Signup & { 
   author: User,
@@ -57,10 +57,24 @@ export default function SignupDetails() {
           ? <textarea required defaultValue={signup.description} rows={3} className="textarea textarea-bordered textarea-lg text-lg text-gray-600" />
           : <Text fz="lg">{signup.description}</Text>
         }
-        <p className="text-sm flex items-center gap-1">
-          Created by {signup.author.firstName} {signup.author.lastName}
-          <a href={`mailto:${signup.author.email}?subject=${signup.title}`} className="link"><EnvelopeIcon className="h-4 w-4" /></a>
-        </p>
+
+        <Group>
+
+          <HoverCard shadow="md">
+            <HoverCard.Target>
+              <Group gap={6}>
+                <Text size="sm">Created by {signup.author.firstName} {signup.author.lastName}</Text>
+                <EnvelopeIcon className="h-4 w-4" />
+              </Group>
+            </HoverCard.Target>
+            <HoverCard.Dropdown>
+              <Group gap={4}>
+                <Text size="sm">Email:</Text>
+                <Code>{signup.author.email}</Code>
+              </Group>
+            </HoverCard.Dropdown>
+          </HoverCard>
+        </Group>
 
         <Stack gap={12} mt='xl'>
           {signup.signupOptions.map(option => <SignupOption key={option.id} option={option} user={user} editable={editable}/>)}
