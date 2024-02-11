@@ -51,7 +51,7 @@ export default function SignupDetails() {
         <Outlet />
         {editable
           ? <input required type="text" defaultValue={signup.title} className="input input-bordered input-lg h-20 text-6xl font-bold" />
-          : <Title className="!text-6xl" order={1}>{signup.title}</Title>
+          : <Title className="!text-6xl" my='md' order={1}>{signup.title}</Title>
         }
         {editable
           ? <textarea required defaultValue={signup.description} rows={3} className="textarea textarea-bordered textarea-lg text-lg text-gray-600" />
