@@ -13,13 +13,14 @@ type Props = {
     participants: Participant[];
   }>
   user: SerializeFrom<User> | null | undefined;
+  editable?: boolean;
 }
 
-export default function SignupOption({ option, user }: Props) {
+export default function SignupOption({ option, user, editable }: Props) {
   const modalRef = useRef<HTMLDialogElement>(null);
   const availableSlots = option.quantity - option.participants.reduce((acc, participant) => acc + participant.quantity, 0);
 
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(editable);
 
   const participant = option.participants.find(participant => participant.userId === user?.id);
   console.log('existing participant', participant);
@@ -39,12 +40,15 @@ export default function SignupOption({ option, user }: Props) {
             }
           </button>
           <div className="flex flex-col items-start flex-grow md:flex-row md:items-center  md:justify-between">
-            <div className="flex flex-col mb-2 md:mb-0">
-              <OptionHeader option={option} />
+            <div className="flex flex-col mb-2 md:mb-0 flex-grow w-full mr-4">
+              <OptionHeader option={option} editable={editable} />
             </div>
-            <span className="bg-accent text-accent-content text-sm p-1 px-2 rounded-lg md:mr-6">{availableSlots} slots available</span>
+            {editable ? <span className="flex flex-shrink-0 items-center">Total slots: <input required type='number' defaultValue={option.quantity} className="input input-bordered input-sm w-[60px] mx-1" /></span> : null}
+            <span className="bg-accent text-accent-content text-sm p-1 px-2 rounded-lg md:mr-6 flex-shrink-0">{availableSlots} slots available</span>
+            {/* <span className="bg-accent text-accent-content text-sm p-1 px-2 rounded-lg md:mr-6 flex-shrink-0">{availableSlots} slots available</span> */}
           </div>
-          <div className="">
+          {/* <div> */}
+          <div hidden={editable}>
             {user && !alreadySignedUp
               ? <button 
                   className={`btn btn-primary ${availableSlots > 0 ? 'btn-outline' : 'btn-disabled'} min-w-[112px]`} 
@@ -71,7 +75,10 @@ export default function SignupOption({ option, user }: Props) {
             <div className="card">
               <div className="card-body py-4">
                 <p className="text-sm font-bold">Details</p>
-                <p className="text-sm">{option.description}</p>
+                {editable
+                  ? <textarea required defaultValue={option.description} rows={4} className="textarea textarea-bordered textarea-sm text-sm" />
+                  : <p className="text-sm">{option.description}</p>
+                }
               </div>
               {option.location ? (
                 <div className="card-body py-4">
